@@ -57,13 +57,20 @@ clean:
 SRCS=$(wildcard $(SRC_DIR)/*.cpp)
 OBJS=$(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-# sources depend on headers
-$(SRC_DIR)/%.cpp: $(SRC_DIR)/%.hpp
+# compile command
+COMPILE_COMMAND=$(CXX) $(INCLUDES) $(COMPILE_FLAGS) -c $< -o $@
 
-# compilation dependencies
+# COMPILE
+# first catch changes to source or header
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp | $(OBJ_DIR)
+	$(COMPILE_COMMAND)
+
+# COMPILE
+# then catch changes to sources only
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
-	$(CXX) $(INCLUDES) $(COMPILE_FLAGS) -c $< -o $@
+	$(COMPILE_COMMAND)
 
+# LINK
 # executable dependencies
 $(EXEC_FULL): $(OBJS) | $(EXEC_DIR)
 	$(CXX) $(LIB_DIRS) $(LIBS) $(LINK_FLAGS) $(OBJS) -o $@
