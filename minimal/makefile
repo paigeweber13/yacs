@@ -18,9 +18,11 @@ CXX=c++
 INCLUDES=
 
 # specify what flags to pass to the compile proper stage
-
-# NOTE: if you have problems, first try removing `-std=c++17` from these flags
 COMPILE_FLAGS=-g -Wall -std=c++17
+
+# NOTE: this set of compile flags is provided for compatibility. If you have
+# problems, first try uncommenting the line below:
+#COMPILE_FLAGS=-g -Wall
 
 # used to tell the compiler to link a library.
 # Example:
