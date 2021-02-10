@@ -2,11 +2,19 @@
 # Edit these variables as needed #
 ##################################
 
+# The main rules you will use are "all", "run", and "test"
+# - `make all` (or just `make`): builds the program
+# - `make run`: builds and runs the program
+# - `make test`: runs unit tests with Catch
+
 # name of your executable
 EXEC=hello
 
-# locations
+# Locations
+# must only contain the file with your `main` function
 SRC_DIR=src
+# all other code goes here
+LIB_DIR=lib
 BUILD_DIR=build
 
 # compiler
@@ -26,14 +34,14 @@ COMPILE_FLAGS=-g -Wall -std=c++17
 
 # used to tell the compiler to link a library.
 # Example:
-#LIBS=-llikwid -lfmt $(shell pkg-config --libs ncurses)
-LIBS=
+#EXT_LIBS=-llikwid -lfmt $(shell pkg-config --libs ncurses)
+EXT_LIBS=
 
 # used to tell the compiler extra locations to look for the libraries specified
 # in $(LIBS). 
 # Example:
-#LIB_DIRS=-I/path/to/my-new-library/build -I/usr/local/likwid/lib
-LIB_DIRS=
+#EXT_LIB_DIRS=-I/path/to/my-new-library/build -I/usr/local/likwid/lib
+EXT_LIB_DIRS=
 
 # pass any extra commands you want to send to the linking stage
 LINK_FLAGS=
@@ -46,9 +54,11 @@ EXEC_DIR=$(BUILD_DIR)/bin
 EXEC_FULL=$(EXEC_DIR)/$(EXEC)
 OBJ_DIR=$(BUILD_DIR)/obj
 
-build: $(EXEC_FULL)
+debug:
+	@echo "SRCS: $(SRCS)"
+	@echo "OBJS: $(OBJS)"
 
-all: build
+all: $(EXEC_FULL)
 
 run: $(EXEC_FULL)
 	$(EXEC_FULL)
@@ -56,26 +66,29 @@ run: $(EXEC_FULL)
 clean:
 	rm $(OBJS) $(EXEC_FULL)
 
-SRCS=$(wildcard $(SRC_DIR)/*.cpp)
-OBJS=$(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+SRCS=$(wildcard $(SRC_DIR)/*.cpp) 
+LIBS=$(wildcard $(LIB_DIR)/*.cpp)
+LIB_OBJS=$(LIBS:$(LIB_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+SRC_OBJ=$(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o) 
+OBJS=$(LIB_OBJS) $(SRC_OBJ)
 
 # compile command
-COMPILE_COMMAND=$(CXX) $(INCLUDES) $(COMPILE_FLAGS) -c $< -o $@
+COMPILE_COMMAND=$(CXX) $(INCLUDES) -I./lib $(COMPILE_FLAGS) -c $< -o $@
 
 # COMPILE
-# first catch changes to source or header
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp | $(OBJ_DIR)
+# for 'lib', catch changes to source or header
+$(OBJ_DIR)/%.o: $(LIB_DIR)/%.cpp $(LIB_DIR)/%.hpp | $(OBJ_DIR)
 	$(COMPILE_COMMAND)
 
 # COMPILE
-# then catch changes to sources only
+# then, for 'src', catch changes to sources only
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(COMPILE_COMMAND)
 
 # LINK
 # executable dependencies
 $(EXEC_FULL): $(OBJS) | $(EXEC_DIR)
-	$(CXX) $(LIB_DIRS) $(LIBS) $(LINK_FLAGS) $(OBJS) -o $@
+	$(CXX) $(EXT_LIB_DIRS) $(EXT_LIBS) $(LINK_FLAGS) $^ -o $@
 
 # make directories if needed:
 define mkdir-command
