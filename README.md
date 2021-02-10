@@ -1,5 +1,7 @@
 # YACS - Yet Another C++ Starter
 
+Uses Catch2 for testing. Choose between conan/CMake or GNU make for builds.
+
 # Motivation
 
 There are many high-quaity C++ boilerplates in existence already. However, I
@@ -12,6 +14,7 @@ just the way I like.
 - Easy. "Just Works", even when adding dependencies.
 - Simple, understandable code.
 - Testing is built-in.
+- Educational: well-commented and able to teach someone new to build systems
 
 # Boilerplate Types, Quickstart
 
@@ -48,9 +51,32 @@ needed, consider using the more complete build system outlined below.
 
 ## Usage:
 
+### Running
+
 To run this boilerplate, simply `cd` into the directory `minimal`, run `make`,
 and then run `build/bin/hello`. Alternatively, run `make run` to build and run
 in one step.
+
+### Adding Dependencies
+
+### Testing
+
+In order for testing to work, we assume you have
+[Catch2](https://github.com/catchorg/Catch2) installed. Use your package
+manager to find this, e.g. `apt search catch2`, `dnf search catch2`,
+`zypper se catch2`, etc.
+
+After that, try running `make tests`, as it might work out of the box. If you
+get the output "All tests passed" or similar, it worked! Otherwise, continue
+below.
+
+Then, make sure the variable `CATCH_INCLUDE` in the makefile points to the
+location where your package manager installed catch (this is probably
+`/usr/include/catch2` or similar). If you can't find it, try using `find` or
+look for a way to get your package manager to tell you the details of where it
+installed catch. Then you can edit `CATCH_INCLUDE` to point to that directory.
+
+Once that's done, `make tests` should definitely work.
 
 # Full Build System
 
@@ -75,7 +101,7 @@ grab it and its transitive dependencies.
 
 ## Usage:
 
-### Running Your Program
+### Running
 
 First, [install conan](https://docs.conan.io/en/latest/installation.html). To
 run your program, first make a `build` directory and switch to it:
@@ -104,3 +130,5 @@ To add dependencies, do the following:
 3. Paste that string on a new line in the `[requires]` section of
    `conanfile.txt`
 4. Re-run all build steps described above.
+
+### Testing
