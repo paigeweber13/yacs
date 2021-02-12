@@ -73,13 +73,6 @@ TEST_DIR=tests
 #INCLUDES=-I/path/to/my-new-library/src -I/usr/local/likwid/include
 INCLUDES=
 
-# Just like 'INCLUDES', but only for catch, so that we can include it only when
-# needed.
-# 
-# IMPORTANT: if you want to use unit tests (`make test`), be sure to edit
-# 'CATCH_INCLUDES' to the path where you have installed the catch headers.
-CATCH_INCLUDE=-I/usr/include/catch2
-
 
 #
 # External Libraries
@@ -146,9 +139,9 @@ $(OBJ_DIR)/%.o: $(LIB_DIR)/%.cpp $(LIB_DIR)/%.hpp | $(OBJ_DIR)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(COMPILE_COMMAND)
 
-# for 'tests', also catch changes to sources only. Include catch!
+# for 'tests', also catch changes to sources only. Include local lib files!
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp | $(OBJ_DIR)
-	$(CXX) $(INCLUDES) $(CATCH_INCLUDE) -I./lib $(COMPILE_FLAGS) -c $< -o $@
+	$(CXX) $(INCLUDES) -I./lib $(COMPILE_FLAGS) -c $< -o $@
 
 
 ###########
