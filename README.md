@@ -67,6 +67,36 @@ in one step.
 
 ### Adding Dependencies
 
+The general procedure is as follows:
+
+1. Install your dependency. Whatever way you do this (package manager, build
+   from source, etc.) make sure you find where it is installed.
+2. In the makefile, add `-l<library-name>` to the variable `EXT_LIBS`
+3. Next, add `-I/path/to/library/headers` to the variable `INCLUDES`
+4. At this point, try to run your program with `make run`, as this may be all
+   you need. If your code can now use the new library, you're done. Otherwise
+   move on to the next step.
+5. In the makefile, add `-L/path/to/library/libfiles` to the variable
+   `EXT_LIB_DIRS`. This is not always necessary, as libraries installed with the
+   package manager usually get placed in a path that the compiler already
+   searches. However, this is necessary if, for instance, you build something
+   from source and install it to a custom location.
+
+This procedure can be made much easier by using the program `pkg-config`. It
+automatically finds the location of many libraries and generates the flags
+needed to pass to the compiler. For instance, suppose you just installed
+`libcrypto`. To find the flags you need with `pkg-config`, follow these
+instructions:
+
+1. Run `pkg-config --libs-only-l libcrypto`. The output of this command is what
+   you need to add to `EXT_LIBS` in the makefile.
+2. Run `pkg-config --libs-only-L libcrypto` (note the capital `L`). The output
+   of this command is what you need to add to `EXT_LIBS_DIRS` in the makefile.
+   This output might be empty. If so, do nothing to `EXT_LIBS_DIRS`.
+3. Run `pkg-config --cflags libcrypto`. The output of this command is what you
+   need to add to `INCLUDES` in the makefile. This output might be empty. If so,
+   do nothing to `INCLUDES`.
+
 ### Testing
 
 In order for testing to work, we assume you have
