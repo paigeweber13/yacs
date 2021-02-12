@@ -4,7 +4,7 @@ Uses Catch2 for testing. Choose between conan/CMake or GNU make for builds.
 
 # Motivation
 
-There are many high-quaity C++ boilerplates in existence already. However, I
+There are many high-quality C++ boilerplates in existence already. However, I
 have a couple reasons for wanting to build my own. First, I don't want to
 learn CMake (yet). And also, I think I'll be happier if things are set up
 just the way I like.
@@ -49,6 +49,14 @@ the name of the executable or add library flags and locations, edit the
 variables at the very top of the makefile. However, if many dependencies are
 needed, consider using the more complete build system outlined below.
 
+## Prerequisistes:
+
+- GNU Make
+- A C++ compiler
+
+Install both of these with your package manager. On ubuntu you can do this 
+with `sudo apt install build-essential`
+
 ## Usage:
 
 ### Running
@@ -80,7 +88,15 @@ Once that's done, `make tests` should definitely work.
 
 # Full Build System
 
-This folder uses Conan for dependency resolution and build management.
+This folder uses Conan for dependency resolution and build management. All
+features are available from the command line, but it also integrates nicely
+with JetBrains's CLion IDE if you install the conan plugin.
+
+## Prerequisites:
+
+- CMake (install with your distro's package manager: `sudo apt install cmake`
+  or similar)
+- [conan](https://docs.conan.io/en/latest/installation.html). 
 
 ## Features:
 
@@ -103,8 +119,7 @@ grab it and its transitive dependencies.
 
 ### Running
 
-First, [install conan](https://docs.conan.io/en/latest/installation.html). To
-run your program, first make a `build` directory and switch to it:
+To run your program, first make a `build` directory and switch to it:
 `mkdir build && cd build`. Next, run the following commands in that build
 directory:
 
@@ -132,3 +147,7 @@ To add dependencies, do the following:
 4. Re-run all build steps described above.
 
 ### Testing
+
+When following the instructions described in the section 'Running', both the
+main executable and the testing executable are generated. Simply run 
+`bin/hello-test` from the build directory.
