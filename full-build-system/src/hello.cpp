@@ -1,9 +1,9 @@
 #include "hello.hpp"
 
-void sayHi(){
+void sayHi() {
   std::cout << "Hello, world!" << std::endl;
 }
 
-int gimmeFive(){
+int gimmeFive() {
   return 5;
 }

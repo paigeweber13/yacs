@@ -5,9 +5,9 @@ Uses Catch2 for testing. Choose between conan/CMake or GNU make for builds.
 # Motivation
 
 There are many high-quality C++ boilerplates in existence already. However, I
-have a couple reasons for wanting to build my own. First, I don't want to
-learn CMake (yet). And also, I think I'll be happier if things are set up
-just the way I like.
+have a couple reasons for wanting to build my own. First, I don't want to learn
+CMake (yet). And also, I think I'll be happier if things are set up just the way
+I like.
 
 # Goals
 
@@ -48,10 +48,10 @@ program written across multiple files, `tests` is where (optional) catch2 tests
 are stored, and the `build` folder is where objects and the executable will be
 created.
 
-All source files should be created in the `lib` folder. To change
-the name of the executable or add library flags and locations, edit the
-variables at the very top of the makefile. However, if many dependencies are
-needed, consider using the more complete build system outlined below.
+All source files should be created in the `lib` folder. To change the name of
+the executable or add library flags and locations, edit the variables at the
+very top of the makefile. However, if many dependencies are needed, consider
+using the more complete build system outlined below.
 
 ## Prerequisistes:
 
@@ -104,8 +104,8 @@ instructions:
 ### Testing
 
 In order for testing to work, we assume you have
-[Catch2](https://github.com/catchorg/Catch2) installed. Use your package
-manager to find this, e.g. `apt search catch2`, `dnf search catch2`,
+[Catch2](https://github.com/catchorg/Catch2) installed. Use your package manager
+to find this, e.g. `apt search catch2`, `dnf search catch2`,
 `zypper se catch2`, etc.
 
 After that, run `make tests`, as it should work out of the box. If not, make
@@ -114,8 +114,8 @@ sure catch2 is installed to a "standard" location like `/usr/include`.
 # Full Build System
 
 This folder uses Conan for dependency resolution and build management. All
-features are available from the command line, but it also integrates nicely
-with JetBrains's CLion IDE if you install the conan plugin.
+features are available from the command line, but it also integrates nicely with
+JetBrains's CLion IDE if you install the conan plugin.
 
 ## Prerequisites:
 

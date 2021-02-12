@@ -41,10 +41,10 @@ conan_basic_setup()
 ### Primary executable
 
 # this automatically prepends each source in sourcesList with the sourceDirectory
-foreach(sourceFull IN LISTS sourcesList)
-  string(PREPEND sourceFull ${sourceDirectory})
-  list(APPEND sourcesListFull ${sourceFull})
-endforeach()
+foreach (sourceFull IN LISTS sourcesList)
+    string(PREPEND sourceFull ${sourceDirectory})
+    list(APPEND sourcesListFull ${sourceFull})
+endforeach ()
 
 # prepend main file with sourceDirectory
 string(PREPEND mainFile ${sourceDirectory})
@@ -58,20 +58,20 @@ target_link_libraries(${execName} ${CONAN_LIBS})
 #### Testing with Catch2
 find_package(Catch2)
 
-IF( Catch2_FOUND )
-  message(STATUS "Catch2 found, generating test executable")
-  # this automatically prepends each test in sourcesList with the sourceDirectory
-  foreach(testFull IN LISTS testList)
-    string(PREPEND testFull ${testDirectory})
-    list(APPEND testListFull ${testFull})
-  endforeach()
-  message(STATUS "test files: ${testListFull}")
+IF (Catch2_FOUND)
+    message(STATUS "Catch2 found, generating test executable")
+    # this automatically prepends each test in sourcesList with the sourceDirectory
+    foreach (testFull IN LISTS testList)
+        string(PREPEND testFull ${testDirectory})
+        list(APPEND testListFull ${testFull})
+    endforeach ()
+    message(STATUS "test files: ${testListFull}")
 
-  # must manually include sourceDirectory or test files won't be able to find source headers
-  include_directories(${sourceDirectory})
+    # must manually include sourceDirectory or test files won't be able to find source headers
+    include_directories(${sourceDirectory})
 
-  add_executable(${testExecName} ${sourcesListFull} ${testListFull})
-  target_link_libraries(${testExecName} PRIVATE Catch2::Catch2)
-ELSE()
-  message(STATUS "Catch2 not found, not generating test executable")
-ENDIF()
+    add_executable(${testExecName} ${sourcesListFull} ${testListFull})
+    target_link_libraries(${testExecName} PRIVATE Catch2::Catch2)
+ELSE ()
+    message(STATUS "Catch2 not found, not generating test executable")
+ENDIF ()
