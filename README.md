@@ -22,7 +22,8 @@ This repository contains two folders, `full-build-system` and `minimal`. Each
 contains one style of boilerplate, which will be explained below.
 
 If you're anxious to get started, copy either one of those directories to
-somewhere on your computer and start coding. For more information on each, read
+somewhere on your computer and start coding. Note that `full-build-system`
+requires conan (`pip3 install --user conan`). For more information on each, read
 on.
 
 # Minimal
@@ -40,11 +41,14 @@ experiments, or projects that have few dependencies.
 - No dependencies except a C++ compiler (however, `-std=c++17` is enabled by
   default)
 
-This folder contains only a makefile, a `src` folder, and a `build` folder. The
-`src` folder contains a hello world written across multiple files, and the
-`build` folder is where objects and the executable will be created.
+This folder contains a makefile, a `src` folder, a `lib` folder, and a
+`tests` folder. The directory `build` is generated when running the makefile.
+The `src` folder contains a simple main file, `lib` contains a hello world
+program written across multiple files, `tests` is where (optional) catch2 tests
+are stored, and the `build` folder is where objects and the executable will be
+created.
 
-All source files should be created in the `src` folder. To change
+All source files should be created in the `lib` folder. To change
 the name of the executable or add library flags and locations, edit the
 variables at the very top of the makefile. However, if many dependencies are
 needed, consider using the more complete build system outlined below.
@@ -54,7 +58,7 @@ needed, consider using the more complete build system outlined below.
 - GNU Make
 - A C++ compiler
 
-Install both of these with your package manager. On ubuntu you can do this 
+Install both of these with your package manager. On ubuntu you can do this
 with `sudo apt install build-essential`
 
 ## Usage:
@@ -104,17 +108,8 @@ In order for testing to work, we assume you have
 manager to find this, e.g. `apt search catch2`, `dnf search catch2`,
 `zypper se catch2`, etc.
 
-After that, try running `make tests`, as it might work out of the box. If you
-get the output "All tests passed" or similar, it worked! Otherwise, continue
-below.
-
-Then, make sure the variable `CATCH_INCLUDE` in the makefile points to the
-location where your package manager installed catch (this is probably
-`/usr/include/catch2` or similar). If you can't find it, try using `find` or
-look for a way to get your package manager to tell you the details of where it
-installed catch. Then you can edit `CATCH_INCLUDE` to point to that directory.
-
-Once that's done, `make tests` should definitely work.
+After that, run `make tests`, as it should work out of the box. If not, make
+sure catch2 is installed to a "standard" location like `/usr/include`.
 
 # Full Build System
 
@@ -126,7 +121,7 @@ with JetBrains's CLion IDE if you install the conan plugin.
 
 - CMake (install with your distro's package manager: `sudo apt install cmake`
   or similar)
-- [conan](https://docs.conan.io/en/latest/installation.html). 
+- [conan](https://docs.conan.io/en/latest/installation.html).
 
 ## Features:
 
@@ -179,5 +174,5 @@ To add dependencies, do the following:
 ### Testing
 
 When following the instructions described in the section 'Running', both the
-main executable and the testing executable are generated. Simply run 
+main executable and the testing executable are generated. Simply run
 `bin/hello-test` from the build directory.
